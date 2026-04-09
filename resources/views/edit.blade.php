@@ -1,0 +1,83 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Edit Produk
+        </h2>
+    </x-slot>
+
+    <div class="py-10">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <form method="POST" action="/update/{{ $product->id }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
+                        <input type="text" name="name" value="{{ $product->name }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
+                        <input type="number" name="price" value="{{ $product->price }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                        <textarea name="desc" rows="3"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">{{ $product->description }}</textarea>
+                    </div>
+
+                    <!-- Gambar saat ini -->
+                    @php $currentImages = collect($product->images ?? ['logo_gaharu.jpg'])->map(fn($img) => asset('storage/' . $img))->toArray(); @endphp
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Saat Ini</label>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($currentImages as $img)
+                                <img src="{{ $img }}" class="h-20 w-20 object-cover rounded-lg border border-gray-200">
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Upload gambar baru -->
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            Ganti Gambar
+                            <span class="text-gray-400 font-normal">(opsional — kosongkan untuk pakai gambar saat ini)</span>
+                        </label>
+                        @php $currentCount = count($currentImages); @endphp
+                        <input type="file" name="images[]" id="editImagesInput" multiple accept="image/*"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                            onchange="limitEditFiles(this, 5)">
+                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP · Maks 2MB per gambar · <strong>Maksimal 5 gambar</strong> (mengganti semua gambar yang ada).</p>
+                        @error('images')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('images.*')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        <p id="editImagesWarning" class="text-red-500 text-xs mt-1 hidden">Maksimal 5 gambar. Hanya 5 gambar pertama yang akan dipakai.</p>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-6">
+                        <a href="{{ route('dashboard') }}" class="text-sm text-gray-600 hover:text-gray-900">← Kembali</a>
+                        <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function limitEditFiles(input, max) {
+            if (input.files.length > max) {
+                document.getElementById('editImagesWarning').classList.remove('hidden');
+            } else {
+                document.getElementById('editImagesWarning').classList.add('hidden');
+            }
+        }
+    </script>
+</x-app-layout>
