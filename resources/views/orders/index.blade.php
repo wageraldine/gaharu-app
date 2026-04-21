@@ -56,7 +56,7 @@
                         {{-- Header pesanan --}}
                         <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-100">
                             <div class="flex items-center gap-3">
-                                <span class="text-sm font-bold text-gray-700">#{{ $order->id }}</span>
+                                <span class="text-sm font-bold text-gray-700">#{{ $order->order_number ?? $order->id }}</span>
                                 <span class="text-xs {{ $c['bg'] }} {{ $c['text'] }} {{ $c['border'] }} border rounded-full px-3 py-1 font-semibold">
                                     {{ $order->statusLabel() }}
                                 </span>

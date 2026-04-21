@@ -1,0 +1,72 @@
+# Catatan Route & Lokasi Fitur Gaharu App
+
+## Bahasa & Framework
+- Backend: PHP (Laravel)
+- Frontend: Blade, JS, Tailwind CSS
+
+---
+
+## Daftar Route & Lokasi Kode Fitur
+
+### 1. Halaman Utama & Login
+- `/` → Redirect ke `/login`
+- `/login`, `/register`, `/forgot-password`, dll (auth):
+  - Controller: `App\Http\Controllers\Auth\*`
+  - View: `resources/views/auth/`
+
+### 2. Dashboard (Setelah Login)
+- `/dashboard`
+  - Data produk: `App\Models\Product`
+  - View: `resources/views/dashboard.blade.php`
+  - Ganti gambar/harga produk: edit di database (tabel `products`), atau lewat fitur tambah/edit produk
+
+### 3. Keranjang
+- `/cart` (lihat keranjang)
+- `/cart/add/{id}` (tambah ke keranjang)
+- `/cart/remove/{id}` (hapus dari keranjang)
+  - Logic: route closure di `routes/web.php`
+  - View: `resources/views/cart.blade.php`
+
+### 4. Produk
+- `/produk/tambah` (GET/POST): tambah produk
+- `/edit/{id}` (GET): edit produk
+- `/update/{id}` (POST): update produk
+- `/delete/{id}` (POST): hapus produk
+  - Logic: route closure di `routes/web.php`
+  - Model: `app/Models/Product.php`
+  - View: `resources/views/produk/tambah.blade.php`, `resources/views/edit.blade.php`, `resources/views/dashboard.blade.php`
+  - Gambar produk: simpan di `storage/app/public/products/` (akses via `public/storage/products/`)
+  - Harga produk: field `price` di tabel `products`
+
+### 5. Profile
+- `/profile` (GET, PATCH, DELETE)
+  - Controller: `App\Http\Controllers\ProfileController`
+  - View: `resources/views/profile/edit.blade.php`
+
+### 6. User Management (Super Admin)
+- `/admin/users`, `/admin/users/create`, `/admin/users/{user}/edit`, dll
+  - Controller: `App\Http\Controllers\UserController`
+  - View: `resources/views/admin/users/*.blade.php`
+  - Data user: `app/Models/User.php`, tabel `users`
+
+### 7. Order/Pesanan
+- (Belum ada route eksplisit di web.php, kemungkinan di controller lain atau akan ditambah)
+  - Model: `app/Models/Order.php`
+  - View: cari file terkait order di `resources/views/`
+
+---
+
+## Cara Ganti Gambar/Harga
+- **Gambar produk:**
+  - Upload lewat fitur tambah/edit produk
+  - File tersimpan di `storage/app/public/products/`
+  - Path gambar di database (field `images` di tabel `products`)
+- **Harga produk:**
+  - Edit lewat fitur edit produk
+  - Atau langsung edit di database (field `price` di tabel `products`)
+
+---
+
+## Catatan Lain
+- Semua logic utama produk/keranjang ada di `routes/web.php` (closure), bukan controller terpisah.
+- Untuk fitur lain, cek controller terkait di `app/Http/Controllers/` dan view di `resources/views/`.

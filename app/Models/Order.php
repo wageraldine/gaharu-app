@@ -7,12 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'items', 'total', 'status', 'payment_proof', 'notes',
+        'user_id', 'items', 'total', 'status', 'payment_proof', 'notes', 'order_number',
     ];
 
     protected $casts = [
         'items' => 'array',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::created(function ($order) {
+            $date = $order->created_at ?? now();
+            $seq = str_pad($order->id, 3, '0', STR_PAD_LEFT);
+            $order_number = 'Order/' . $date->format('d/m/Y') . '/' . $seq;
+            $order->order_number = $order_number;
+            $order->save();
+        });
+    }
 
     public function user()
     {
