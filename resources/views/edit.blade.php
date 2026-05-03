@@ -30,7 +30,7 @@
                     </div>
 
                     <!-- Gambar saat ini -->
-                    @php $currentImages = collect($product->images ?? ['logo_gaharu.jpg'])->map(fn($img) => asset('storage/' . $img))->toArray(); @endphp
+                    @php $currentImages = collect($product->images ?? ['logo_gaharu.jpg'])->map(fn($img) => asset($img))->toArray(); @endphp
                     <div class="mt-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Saat Ini</label>
                         <div class="flex flex-wrap gap-2">

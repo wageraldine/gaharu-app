@@ -37,7 +37,7 @@
 
 @foreach($products as $p)
 <div class="card">
-    <img src="{{ asset('storage/'.$p['image']) }}">
+    <img src="{{ asset($p['image']) }}">
     <h3>{{ $p['name'] }}</h3>
     <p>{{ $p['desc'] }}</p>
     <p><b>{{ $p['price'] }}</b></p>

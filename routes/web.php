@@ -77,7 +77,9 @@ Route::post('/produk/tambah', function (\Illuminate\Http\Request $r) {
     $imagePaths = [];
     if ($r->hasFile('images')) {
         foreach (array_slice($r->file('images'), 0, 5) as $file) {
-            $imagePaths[] = $file->store('products', 'public');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('products'), $filename);
+            $imagePaths[] = 'products/' . $filename;
         }
     }
     if (empty($imagePaths)) {
@@ -117,13 +119,16 @@ Route::post('/update/{id}', function (\Illuminate\Http\Request $r, $id) {
         if ($imagePaths) {
             foreach ($imagePaths as $img) {
                 if ($img !== 'logo_gaharu.jpg') {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($img);
+                    $fullPath = public_path($img);
+                    if (file_exists($fullPath)) unlink($fullPath);
                 }
             }
         }
         $imagePaths = [];
         foreach (array_slice($r->file('images'), 0, 5) as $file) {
-            $imagePaths[] = $file->store('products', 'public');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('products'), $filename);
+            $imagePaths[] = 'products/' . $filename;
         }
     }
     if (empty($imagePaths)) {
@@ -144,7 +149,8 @@ Route::post('/delete/{id}', function ($id) {
     if ($product->images) {
         foreach ($product->images as $img) {
             if ($img !== 'logo_gaharu.jpg') {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($img);
+                $fullPath = public_path($img);
+                if (file_exists($fullPath)) unlink($fullPath);
             }
         }
     }

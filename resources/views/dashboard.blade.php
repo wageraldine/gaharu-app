@@ -37,7 +37,7 @@
                 @foreach($products as $p)
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
                     @php
-                        $cardImages = collect($p->images ?? ['logo_gaharu.jpg'])->map(fn($img) => asset('storage/' . $img))->toArray();
+                        $cardImages = collect($p->images ?? ['logo_gaharu.jpg'])->map(fn($img) => asset($img))->toArray();
                     @endphp
                     <div
                         x-data="{
