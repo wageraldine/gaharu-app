@@ -1,1 +1,1 @@
-<img src="{{ asset('storage/logo_gaharu.jpg') }}" alt="Gaharu Logo" {{ $attributes }}>
+<img src="{{ asset('logo_gaharu.jpg') }}" alt="Gaharu Logo" {{ $attributes }}>

@@ -151,7 +151,7 @@
 
                 <!-- Product image -->
                 <div class="relative h-48 bg-gray-100">
-                    <img :src="product.images && product.images.length ? product.images[0] : '{{ asset('storage/logo_gaharu.jpg') }}'"
+                    <img :src="product.images && product.images.length ? product.images[0] : '{{ asset('logo_gaharu.jpg') }}'"
                          class="w-full h-full object-cover" draggable="false">
                     <button @click="close()"
                         class="absolute top-3 right-3 bg-black/40 hover:bg-black/60 text-white rounded-full w-7 h-7 flex items-center justify-center text-base leading-none transition">
